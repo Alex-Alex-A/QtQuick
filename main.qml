@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 Window {
     id: primaryFrame
     width: 640
-    height: 480
+    height: 520
     visible: true
     title: qsTr("Triangle Calculations")
     color: "#e5ecef"
@@ -38,9 +38,9 @@ Window {
 
     function calcSquare() {
 
-        var a = Number(sideA.text)
-        var b = Number(sideB.text)
-        var c = Number(sideC.text)
+        var a = Math.sqrt((Math.pow((Number(pointAx.text) - Number(pointBx.text)), 2.0) + Math.pow((Number(pointAy.text) - Number(pointBy.text)), 2.0)))
+        var b = Math.sqrt((Math.pow((Number(pointCx.text) - Number(pointBx.text)), 2.0) + Math.pow((Number(pointCy.text) - Number(pointBy.text)), 2.0)))
+        var c = Math.sqrt((Math.pow((Number(pointAx.text) - Number(pointCx.text)), 2.0) + Math.pow((Number(pointAy.text) - Number(pointCy.text)), 2.0)))
 
         var p = (a + b + c) / 2.0
 
@@ -57,25 +57,49 @@ Window {
         spacing: 32
 
         TextField {
-            id: sideA
+            id: pointAx
             anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: qsTr("sideA")
+            placeholderText: qsTr("pointAx")
             Keys.onEnterPressed: calcSquare()
             Keys.onReturnPressed: calcSquare()
         }
 
         TextField {
-            id: sideB
+            id: pointAy
             anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: qsTr("sideB")
+            placeholderText: qsTr("pointAy")
             Keys.onEnterPressed: calcSquare()
             Keys.onReturnPressed: calcSquare()
         }
 
         TextField {
-            id: sideC
+            id: pointBx
             anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: qsTr("sideC")
+            placeholderText: qsTr("pointBx")
+            Keys.onEnterPressed: calcSquare()
+            Keys.onReturnPressed: calcSquare()
+        }
+
+        TextField {
+            id: pointBy
+            anchors.horizontalCenter: parent.horizontalCenter
+            placeholderText: qsTr("pointBy")
+            Keys.onEnterPressed: calcSquare()
+            Keys.onReturnPressed: calcSquare()
+        }
+
+        TextField {
+            id: pointCx
+            anchors.horizontalCenter: parent.horizontalCenter
+            placeholderText: qsTr("pointCx")
+            Keys.onEnterPressed: calcSquare()
+            Keys.onReturnPressed: calcSquare()
+        }
+
+        TextField {
+            id: pointCy
+            anchors.horizontalCenter: parent.horizontalCenter
+            placeholderText: qsTr("pointCy")
             Keys.onEnterPressed: calcSquare()
             Keys.onReturnPressed: calcSquare()
         }
