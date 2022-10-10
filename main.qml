@@ -6,105 +6,136 @@ import QtQuick.Dialogs 1.2
 
 Window {
     id: primaryFrame
-    width: 640
+    width: 540
     height: 520
     visible: true
-    title: qsTr("Triangle Calculations")
+    title: qsTr("Creating Date Account")
     color: "#e5ecef"
 
-    Dialog {
-        id: customDialog
-        title: "Square is:"
-        standardButtons: StandardButton.Ok
+    property string gsex: ""
 
-        Column {
-            anchors.fill: parent
-            Text {
-                text: calcSquare()
-            }
-            TextInput {
-                id: edtInput
-            }
+    function accountDetails() {
+
+        var fn = fname.text
+        var sn = sname.text
+        var age = fage.text
+
+        if (fn.length < 1 || sn.length < 1 || age.length < 1 || gsex == "") {
+            console.log("Fields must not be empty!!!")
+            return
         }
 
-        onButtonClicked: {
-            if (clickedButton === StandardButton.Ok) {
-                lblResults.text += edtInput.text
-            } else {
-            }
+        if (isNaN(age)) {
+            console.log("Age must be a number!!!")
+            return
         }
-    }
 
-
-    function calcSquare() {
-
-        var a = Math.sqrt((Math.pow((Number(pointAx.text) - Number(pointBx.text)), 2.0) + Math.pow((Number(pointAy.text) - Number(pointBy.text)), 2.0)))
-        var b = Math.sqrt((Math.pow((Number(pointCx.text) - Number(pointBx.text)), 2.0) + Math.pow((Number(pointCy.text) - Number(pointBy.text)), 2.0)))
-        var c = Math.sqrt((Math.pow((Number(pointAx.text) - Number(pointCx.text)), 2.0) + Math.pow((Number(pointAy.text) - Number(pointCy.text)), 2.0)))
-
-        var p = (a + b + c) / 2.0
-
-        var s = Math.sqrt(  p * (p - a) * (p - b) * (p - c)      )
-
-        return s.toString()
+        console.log("\n     Your first name:  " + fn)
+        console.log("Your second name:  " + sn)
+        console.log("Your age:  " + age)
+        console.log("Your sex:  " + gsex)
     }
 
 
 
     Column {
         anchors.fill: parent
-        padding: 32
-        spacing: 32
+        padding: 62
+        spacing: 62
 
-        TextField {
-            id: pointAx
-            anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: qsTr("pointAx")
-            Keys.onEnterPressed: calcSquare()
-            Keys.onReturnPressed: calcSquare()
+        Row {
+            anchors.fill: parent
+
+            Label {
+                text: "Type Your First Name"
+                verticalAlignment: "AlignVCenter"
+                topPadding: 8
+                leftPadding: 50
+            }
+
+            TextField {
+                id: fname
+                anchors.horizontalCenter: parent.horizontalCenter
+                placeholderText: qsTr("First Name")
+                Keys.onEnterPressed: accountDetails()
+                Keys.onReturnPressed: accountDetails()
+            }
         }
 
-        TextField {
-            id: pointAy
-            anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: qsTr("pointAy")
-            Keys.onEnterPressed: calcSquare()
-            Keys.onReturnPressed: calcSquare()
+        Row {
+            anchors.fill: parent
+            anchors.topMargin: 46
+
+            Label {
+                text: "Type Your Second Name"
+                verticalAlignment: "AlignVCenter"
+                topPadding: 8
+                leftPadding: 50
+            }
+
+            TextField {
+                id: sname
+                anchors.horizontalCenter: parent.horizontalCenter
+                placeholderText: qsTr("Second Name")
+                Keys.onEnterPressed: accountDetails()
+                Keys.onReturnPressed: accountDetails()
+            }
         }
 
-        TextField {
-            id: pointBx
-            anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: qsTr("pointBx")
-            Keys.onEnterPressed: calcSquare()
-            Keys.onReturnPressed: calcSquare()
+        Row {
+            anchors.fill: parent
+            anchors.topMargin: 92
+
+            Label {
+                text: "Type Your Age"
+                verticalAlignment: "AlignVCenter"
+                topPadding: 8
+                leftPadding: 50
+            }
+
+            TextField {
+                id: fage
+                anchors.horizontalCenter: parent.horizontalCenter
+                placeholderText: qsTr("Age")
+                Keys.onEnterPressed: accountDetails()
+                Keys.onReturnPressed: accountDetails()
+            }
         }
 
-        TextField {
-            id: pointBy
-            anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: qsTr("pointBy")
-            Keys.onEnterPressed: calcSquare()
-            Keys.onReturnPressed: calcSquare()
+        Row {
+            anchors.fill: parent
+            anchors.topMargin: 138
+            leftPadding: 50
+
+            Label {
+                text: "Type Your Sex"
+                verticalAlignment: "AlignVCenter"
+                topPadding: 8
+                rightPadding: 50
+            }
+
+            ComboBox {
+                width: 200
+                currentIndex: 0
+                textRole: "key"
+                model: ListModel {
+                    id: fsex
+                    ListElement { key: "" }
+                    ListElement { key: "Male" }
+                    ListElement { key: "Female" }
+                }
+
+                onCurrentIndexChanged: gsex = fsex.get(currentIndex).key
+            }
         }
 
-        TextField {
-            id: pointCx
-            anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: qsTr("pointCx")
-            Keys.onEnterPressed: calcSquare()
-            Keys.onReturnPressed: calcSquare()
-        }
 
-        TextField {
-            id: pointCy
-            anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: qsTr("pointCy")
-            Keys.onEnterPressed: calcSquare()
-            Keys.onReturnPressed: calcSquare()
-        }
 
-        Button {
+        Row {
+            anchors.fill: parent
+            anchors.topMargin: 192
+
+            Button {
                         id: submitButton
                         width: 200
                         height: 40
@@ -112,10 +143,11 @@ Window {
                         color: parent.down ? "#bbbbbb" : (parent.hovered ? "#d6d6d6" : "#f6f6f6")
                         }
 
-                        text: qsTr("Calculate")
+                        text: qsTr("Create Account")
                         anchors.horizontalCenter: parent.horizontalCenter
 
-                        onClicked: customDialog.open()
+                        onClicked: accountDetails()
+            }
         }
     }
 
