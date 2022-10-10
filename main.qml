@@ -9,147 +9,93 @@ Window {
     width: 540
     height: 520
     visible: true
-    title: qsTr("Creating Date Account")
+    title: qsTr("Animation1")
     color: "#e5ecef"
 
-    property string gsex: ""
+    property string current_color: "#0000FF"
+    property string finish_color: ""
 
-    function accountDetails() {
+    function randomize_Color() {
+        finish_color = "#"
 
-        var fn = fname.text
-        var sn = sname.text
-        var age = fage.text
-
-        if (fn.length < 1 || sn.length < 1 || age.length < 1 || gsex == "") {
-            console.log("Fields must not be empty!!!")
-            return
+        for (var i = 0; i < 6; i++) {
+            var symbol = Math.floor(Math.random() * (15 - 0 + 1) + 0)
+            if (symbol == 10)
+                       symbol = "A"
+            if (symbol == 11)
+                       symbol = "B"
+            if (symbol == 12)
+                       symbol = "C"
+            if (symbol == 13)
+                       symbol = "D"
+            if (symbol == 14)
+                       symbol = "E"
+            if (symbol == 15)
+                       symbol = "F"
+            finish_color += String(symbol)
         }
 
-        if (isNaN(age)) {
-            console.log("Age must be a number!!!")
-            return
-        }
+        anim1.start()
+    }
 
-        console.log("\n     Your first name:  " + fn)
-        console.log("Your second name:  " + sn)
-        console.log("Your age:  " + age)
-        console.log("Your sex:  " + gsex)
+    function became_Circle() {
+        anim2.start()
+    }
+
+    Rectangle { //
+        id: rect_cnhange_color
+        height: 300
+        width: 300
+        color: "#0000FF"
+        radius: 1
+        anchors.horizontalCenter: parent.horizontalCenter //
+        anchors.verticalCenter: parent.verticalCenter
+
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+            hoverEnabled: true
+            onClicked: {
+                if (mouse.button == Qt.RightButton)
+                   anim3.start()
+                else
+                   randomize_Color()
+            }
+            onDoubleClicked: became_Circle()
+        }
     }
 
 
-
-    Column {
-        anchors.fill: parent
-        padding: 62
-        spacing: 62
-
-        Row {
-            anchors.fill: parent
-
-            Label {
-                text: "Type Your First Name"
-                verticalAlignment: "AlignVCenter"
-                topPadding: 8
-                leftPadding: 50
-            }
-
-            TextField {
-                id: fname
-                anchors.horizontalCenter: parent.horizontalCenter
-                placeholderText: qsTr("First Name")
-                Keys.onEnterPressed: accountDetails()
-                Keys.onReturnPressed: accountDetails()
-            }
-        }
-
-        Row {
-            anchors.fill: parent
-            anchors.topMargin: 46
-
-            Label {
-                text: "Type Your Second Name"
-                verticalAlignment: "AlignVCenter"
-                topPadding: 8
-                leftPadding: 50
-            }
-
-            TextField {
-                id: sname
-                anchors.horizontalCenter: parent.horizontalCenter
-                placeholderText: qsTr("Second Name")
-                Keys.onEnterPressed: accountDetails()
-                Keys.onReturnPressed: accountDetails()
-            }
-        }
-
-        Row {
-            anchors.fill: parent
-            anchors.topMargin: 92
-
-            Label {
-                text: "Type Your Age"
-                verticalAlignment: "AlignVCenter"
-                topPadding: 8
-                leftPadding: 50
-            }
-
-            TextField {
-                id: fage
-                anchors.horizontalCenter: parent.horizontalCenter
-                placeholderText: qsTr("Age")
-                Keys.onEnterPressed: accountDetails()
-                Keys.onReturnPressed: accountDetails()
-            }
-        }
-
-        Row {
-            anchors.fill: parent
-            anchors.topMargin: 138
-            leftPadding: 50
-
-            Label {
-                text: "Type Your Sex"
-                verticalAlignment: "AlignVCenter"
-                topPadding: 8
-                rightPadding: 50
-            }
-
-            ComboBox {
-                width: 200
-                currentIndex: 0
-                textRole: "key"
-                model: ListModel {
-                    id: fsex
-                    ListElement { key: "" }
-                    ListElement { key: "Male" }
-                    ListElement { key: "Female" }
-                }
-
-                onCurrentIndexChanged: gsex = fsex.get(currentIndex).key
-            }
-        }
-
-
-
-        Row {
-            anchors.fill: parent
-            anchors.topMargin: 192
-
-            Button {
-                        id: submitButton
-                        width: 200
-                        height: 40
-                        background: Rectangle {
-                        color: parent.down ? "#bbbbbb" : (parent.hovered ? "#d6d6d6" : "#f6f6f6")
-                        }
-
-                        text: qsTr("Create Account")
-                        anchors.horizontalCenter: parent.horizontalCenter
-
-                        onClicked: accountDetails()
-            }
-        }
+    PropertyAnimation {
+        id: anim1
+        target: rect_cnhange_color
+        property: "color" //
+        from: current_color //
+        to: finish_color
+        duration: 2500
+        running: false //
+        onFinished: { current_color = finish_color; }   // по окончании анимации запоминаем финальный цвет, чтоб потом начать с него
     }
 
+
+    PropertyAnimation {
+        id: anim2
+        target: rect_cnhange_color
+        property: "radius" //
+        from: 1
+        to: 50
+        duration: 1000
+        running: false //
+    }
+
+
+    RotationAnimation {
+            id: anim3
+            target: rect_cnhange_color
+            properties: "rotation"
+            to: 360
+            duration: 4000
+            running: false //
+    }
 }
 
